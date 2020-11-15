@@ -13,9 +13,9 @@ import { actions } from '@cart/constants/cart.constants';
 export class CartService {
   private cartStorage: CartShopping;
   private cartShopping = new BehaviorSubject<CartShopping>({} as CartShopping);
-  private idBusiness = 1;
-  private nameBusiness = 'Deposito Duques';
-  private imgBusiness = 'assets/img/user.jpg';
+  public idBusiness = 1;
+  public nameBusiness = 'Deposito Duques';
+  public imgBusiness = 'assets/img/user.jpg';
   public value: number;
 
   constructor(@Inject(LOCAL_STORAGE) private localStorage: LocalStorage) {}
@@ -68,11 +68,11 @@ export class CartService {
     return hasProduct;
   }
 
-  private getCartId(): string {
+  public getCartId(): string {
     return `cart-${this.idBusiness}`;
   }
 
-  private userHasCart(item: ListProducts, action: string): void {
+  public userHasCart(item: ListProducts, action: string): void {
     const hasProduct = this.cartStorage.products.find(
       (product) => product.id === item.id
     );
@@ -91,7 +91,7 @@ export class CartService {
     }
   }
 
-  private incrementQuantity(hasProduct: ListProducts): void {
+  public incrementQuantity(hasProduct: ListProducts): void {
     this.cartStorage.products.map((product) => {
       if (product.id === hasProduct.id) {
         hasProduct.quantity += this.value;
@@ -99,7 +99,7 @@ export class CartService {
     });
   }
 
-  private decrementQuantity(hasProduct: ListProducts): void {
+  public decrementQuantity(hasProduct: ListProducts): void {
     let remove = false;
     this.cartStorage.products.map((product) => {
       if (product.id === hasProduct.id) {
@@ -114,7 +114,7 @@ export class CartService {
     }
   }
 
-  private removeItemFromArr(
+  public removeItemFromArr(
     products: ListProducts[],
     product: ListProducts
   ): void {
@@ -124,7 +124,7 @@ export class CartService {
     }
   }
 
-  private userHasNotCart(item: ListProducts): void {
+  public userHasNotCart(item: ListProducts): void {
     this.cartStorage = {
       id: this.idBusiness,
       name: this.nameBusiness,
@@ -134,7 +134,7 @@ export class CartService {
     this.setCartItem(this.getCartId(), this.cartStorage);
   }
 
-  private setCartItem(cartId: string, cart: CartShopping): void {
+  public setCartItem(cartId: string, cart: CartShopping): void {
     localStorage.removeItem(this.getCartId());
     localStorage.setItem(cartId, JSON.stringify(cart));
     this.cartShopping.next(cart);
